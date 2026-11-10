@@ -1,11 +1,16 @@
+#include "\z\mgrs\addons\mgrs\script_mod.hpp"
+
 class CfgPatches {
     class zmgrs_geo {
         name = "MGRS georeference table";
-        author = "lErrorl404l";
-        requiredVersion = 2.1;
+        author = AUTHOR;
+        authors[] = AUTHORS;
+        url = URL;
+        requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {"A3_Data_F_Decade_Loadorder"};
         units[] = {};
         weapons[] = {};
+        VERSION_CONFIG;
         datum = "WGS84";
         syntheticOrigin[] = {30, 3};
         syntheticZone = 31;

@@ -8,4 +8,5 @@ overview = "MGRS-derived engine grid patch and georeference API for Arma 3 terra
 author = "lErrorl404l";
 actionName = "GitHub";
 action = "https://github.com/lErrorl404l/arma-mgrs";
+version = "0.1.0.1";
 overviewText = "MGRS-derived engine grid patch and georeference API for Arma 3 terrains.";
