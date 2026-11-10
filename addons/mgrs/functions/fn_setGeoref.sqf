@@ -3,7 +3,8 @@
  * that falls back to a virtual reference and whose real box is known.
  *
  * Example: ["WL_Rosche", [52.9275, 10.5640, 53.0639, 10.7918]] call mgrs_fnc_setGeoref;
- * A fifth value of 1 marks the reference as virtual.
+ * A fifth value of 1 marks the reference as virtual. Returns true on
+ * success and false when the box is unusable.
  */
 params [
     ["_world", ""],
@@ -15,7 +16,10 @@ params [
 ];
 
 if (_world == "") then { _world = worldName; };
-if (count _box < 4) exitWith {};
+if (count _box < 4) exitWith { false };
+if ((_box select 0) >= (_box select 2) || (_box select 1) >= (_box select 3)) exitWith { false };
+if ((_box select 0) < -80 || (_box select 2) > 84) exitWith { false };
+if ((_box select 1) < -180 || (_box select 3) > 180) exitWith { false };
 
 private _geo = [_box select 0, _box select 1, _box select 2, _box select 3, 0];
 if (count _box >= 5) then { _geo set [4, _box select 4]; };
@@ -23,3 +27,8 @@ if (count _box >= 5) then { _geo set [4, _box select 4]; };
 private _cache = missionNamespace getVariable ["mgrs_georefCache", createHashMap];
 _cache set [_world, _geo + [_source, _confidence, _control, _biome]];
 missionNamespace setVariable ["mgrs_georefCache", _cache];
+
+private _biomeCache = missionNamespace getVariable ["mgrs_biomeCache", createHashMap];
+_biomeCache deleteAt _world;
+missionNamespace setVariable ["mgrs_biomeCache", _biomeCache];
+true

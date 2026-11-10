@@ -6,6 +6,8 @@
  */
 params ["_zone", "_easting", "_northing", "_lat", ["_digits", 4, [0]]];
 
+_digits = _digits max 1 min 5;
+
 private _band = [_lat] call mgrs_fnc_latToBand;
 
 private _colSets = ["ABCDEFGH", "JKLMNPQR", "STUVWXYZ"];

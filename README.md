@@ -143,7 +143,7 @@ sends that string to every client. The stored string does not move the marker.
 
 ## Script API
 
-All functions are global and final:
+All functions are global:
 
 ```
 _position call mgrs_fnc_posToMGRS;        // "35S LD 2960 9840"
@@ -159,7 +159,8 @@ call mgrs_fnc_getGeoref;                  // [latMin, lonMin, latMax, lonMax, vi
 `mgrs_fnc_posToMGRS`, `mgrs_fnc_posToUTM` and
 `mgrs_fnc_mapGridPosition` accept an Object or a Position and return an
 empty string when the terrain has no georeference. Every function returns a
-defined value. None returns `nil`.
+defined value: strings for the conversions, an array for the georeference
+readers, and `true` or `false` for `mgrs_fnc_setGeoref`.
 
 `mgrs_fnc_getGeorefInfo` returns the box, the source token, a confidence
 between 0 and 1, the control-point array and the optional biome hint. The
@@ -236,10 +237,11 @@ records which checks fired for each world.
 mgrsControl[] = {worldX, worldY, latitude, longitude};
 ```
 
-Three or more points let `mgrs_fnc_posToMGRS` and `mgrs_fnc_posToUTM` fit a
-local affine transform, which corrects scale, rotation and grid convergence.
-The engine `Grid` still uses the box because the engine grid cannot rotate.
-With fewer than three points the API falls back to the box.
+The first three points define a local affine transform, which corrects
+scale, rotation and grid convergence. Points after the third are stored but
+not used by the fit. The engine `Grid` still uses the box because the engine
+grid cannot rotate. With fewer than three points the API falls back to the
+box.
 
 ### Source, confidence and biome
 

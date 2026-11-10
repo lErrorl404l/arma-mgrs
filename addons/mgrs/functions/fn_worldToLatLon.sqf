@@ -1,6 +1,6 @@
 /*
- * Maps an Arma world position onto the terrain georeference. A control-point
- * set of three or more uses a local affine fit. Otherwise the declared box is
+ * Maps an Arma world position onto the terrain georeference. The first three
+ * control points define a local affine fit. Otherwise the declared box is
  * interpolated linearly. Arma world axes are metres, +X east and +Y north.
  */
 params ["_pos", "_geo", ["_size", 0], ["_control", [], [[]]]];
