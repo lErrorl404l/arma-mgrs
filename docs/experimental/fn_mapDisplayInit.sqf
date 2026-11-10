@@ -18,7 +18,7 @@ _readout ctrlSetFontHeight 0.036;
 _readout ctrlSetText "";
 _readout ctrlCommit 0;
 
-_display setVariable ["zmgrs_readoutCtrl", _readout];
+_display setVariable ["mgrs_readoutCtrl", _readout];
 
 private _labels = [];
 for "_i" from 1 to 96 do {
@@ -32,8 +32,8 @@ for "_i" from 1 to 96 do {
     _label ctrlShow false;
     _labels pushBack _label;
 };
-_display setVariable ["zmgrs_gridLabelCtrls", _labels];
+_display setVariable ["mgrs_gridLabelCtrls", _labels];
 
 _map ctrlAddEventHandler ["Draw", {
-    _this call zmgrs_fnc_updateReadout
+    _this call mgrs_fnc_updateReadout
 }];

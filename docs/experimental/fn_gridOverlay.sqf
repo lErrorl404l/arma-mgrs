@@ -6,9 +6,9 @@
 params ["_map", "_display"];
 
 if (isNull _map || isNull _display) exitWith {};
-if (!(missionNamespace getVariable ["zmgrs_drawGrid", true])) exitWith {};
+if (!(missionNamespace getVariable ["mgrs_drawGrid", true])) exitWith {};
 
-private _geo = [worldName] call zmgrs_fnc_getGeoref;
+private _geo = [worldName] call mgrs_fnc_getGeoref;
 if (count _geo < 4) exitWith {};
 private _virtual = ((count _geo >= 5) && ((_geo select 4) == 1));
 
@@ -18,14 +18,14 @@ if (_size <= 0) then {
 };
 if (_size <= 0) exitWith {};
 
-private _proj = _display getVariable ["zmgrs_gridProj", []];
+private _proj = _display getVariable ["mgrs_gridProj", []];
 if (count _proj < 6) then {
-    private _ll0 = [[0, 0], _geo, _size] call zmgrs_fnc_worldToLatLon;
-    private _llX = [[_size, 0], _geo, _size] call zmgrs_fnc_worldToLatLon;
-    private _llY = [[0, _size], _geo, _size] call zmgrs_fnc_worldToLatLon;
-    private _utm0 = [_ll0 select 0, _ll0 select 1] call zmgrs_fnc_latLonToUtm;
-    private _utmX = [_llX select 0, _llX select 1] call zmgrs_fnc_latLonToUtm;
-    private _utmY = [_llY select 0, _llY select 1] call zmgrs_fnc_latLonToUtm;
+    private _ll0 = [[0, 0], _geo, _size] call mgrs_fnc_worldToLatLon;
+    private _llX = [[_size, 0], _geo, _size] call mgrs_fnc_worldToLatLon;
+    private _llY = [[0, _size], _geo, _size] call mgrs_fnc_worldToLatLon;
+    private _utm0 = [_ll0 select 0, _ll0 select 1] call mgrs_fnc_latLonToUTM;
+    private _utmX = [_llX select 0, _llX select 1] call mgrs_fnc_latLonToUTM;
+    private _utmY = [_llY select 0, _llY select 1] call mgrs_fnc_latLonToUTM;
     _proj = [
         _size,
         _utm0 select 1,
@@ -34,7 +34,7 @@ if (count _proj < 6) then {
         ((_utmY select 2) - (_utm0 select 2)) / _size,
         _utm0 select 0
     ];
-    _display setVariable ["zmgrs_gridProj", _proj];
+    _display setVariable ["mgrs_gridProj", _proj];
 };
 _proj params ["_pSize", "_e0", "_n0", "_sx", "_sy", "_zone"];
 if (_sx <= 0 || _sy <= 0) exitWith {};
@@ -111,17 +111,17 @@ for "_k" from 0 to 60 do {
     };
 };
 
-if (!(missionNamespace getVariable ["zmgrs_gridLabels", true])) exitWith {};
+if (!(missionNamespace getVariable ["mgrs_gridLabels", true])) exitWith {};
 
-private _lastStep = _display getVariable ["zmgrs_gridStep", -1];
+private _lastStep = _display getVariable ["mgrs_gridStep", -1];
 private _force = _step != _lastStep;
-_display setVariable ["zmgrs_gridStep", _step];
+_display setVariable ["mgrs_gridStep", _step];
 
-private _next = _display getVariable ["zmgrs_gridLabelNext", 0];
+private _next = _display getVariable ["mgrs_gridLabelNext", 0];
 if (!_force && (diag_tickTime < _next)) exitWith {};
-_display setVariable ["zmgrs_gridLabelNext", diag_tickTime + 0.05];
+_display setVariable ["mgrs_gridLabelNext", diag_tickTime + 0.05];
 
-private _pool = _display getVariable ["zmgrs_gridLabelCtrls", []];
+private _pool = _display getVariable ["mgrs_gridLabelCtrls", []];
 if (count _pool == 0) exitWith {};
 
 private _used = 0;
@@ -146,7 +146,7 @@ while {_e <= _eEnd} do {
             private _eMod = (((round _e) mod _square) + _square) mod _square;
             private _value = floor (_eMod / (10 ^ (5 - _digits)));
             private _ctrl = _pool select _used;
-            _ctrl ctrlSetText ([_value, _digits] call zmgrs_fnc_padDigits);
+            _ctrl ctrlSetText ([_value, _digits] call mgrs_fnc_padDigits);
             _ctrl ctrlSetBackgroundColor [1, 1, 1, 0.62];
             _ctrl ctrlSetTextColor [0, 0, 0, 1];
             _ctrl ctrlSetPosition [_px - 0.021, _py, 0.042, 0.022];
@@ -160,7 +160,7 @@ while {_e <= _eEnd} do {
         private _scr = _map ctrlMapWorldToScreen [_x, _yMin];
         private _px = _scr select 0;
         if ((_px > 0) && (_px < 1)) then {
-            private _mgrs = [[_x + 1, _yMin + 1], 4] call zmgrs_fnc_posToMgrs;
+            private _mgrs = [[_x + 1, _yMin + 1], 4] call mgrs_fnc_posToMGRS;
             private _parts = _mgrs splitString " ";
             if (count _parts >= 2) then {
                 private _ctrl = _pool select _used;
@@ -192,7 +192,7 @@ while {_e <= _eEnd} do {
             private _eMod = (((round _e) mod _square) + _square) mod _square;
             private _value = floor (_eMod / (10 ^ (5 - _digits)));
             private _ctrl = _pool select _used;
-            _ctrl ctrlSetText ([_value, _digits] call zmgrs_fnc_padDigits);
+            _ctrl ctrlSetText ([_value, _digits] call mgrs_fnc_padDigits);
             _ctrl ctrlSetBackgroundColor [1, 1, 1, 0.62];
             _ctrl ctrlSetTextColor [0, 0, 0, 1];
             _ctrl ctrlSetPosition [_px - 0.021, _py, 0.042, 0.022];
@@ -219,7 +219,7 @@ while {_n <= _nEnd} do {
             private _nMod = (((round _n) mod _square) + _square) mod _square;
             private _value = floor (_nMod / (10 ^ (5 - _digits)));
             private _ctrl = _pool select _used;
-            _ctrl ctrlSetText ([_value, _digits] call zmgrs_fnc_padDigits);
+            _ctrl ctrlSetText ([_value, _digits] call mgrs_fnc_padDigits);
             _ctrl ctrlSetBackgroundColor [1, 1, 1, 0.62];
             _ctrl ctrlSetTextColor [0, 0, 0, 1];
             _ctrl ctrlSetPosition [_px, _py, 0.042, 0.022];
@@ -233,7 +233,7 @@ while {_n <= _nEnd} do {
         private _scr = _map ctrlMapWorldToScreen [_xMin, _y];
         private _py = (_scr select 1) - 0.011;
         if ((_py > 0.08) && (_py < 0.93)) then {
-            private _mgrs = [[_xMin + 1, _y + 1], 4] call zmgrs_fnc_posToMgrs;
+            private _mgrs = [[_xMin + 1, _y + 1], 4] call mgrs_fnc_posToMGRS;
             private _parts = _mgrs splitString " ";
             if (count _parts >= 2) then {
                 private _ctrl = _pool select _used;
@@ -265,7 +265,7 @@ while {_n <= _nEnd} do {
             private _nMod = (((round _n) mod _square) + _square) mod _square;
             private _value = floor (_nMod / (10 ^ (5 - _digits)));
             private _ctrl = _pool select _used;
-            _ctrl ctrlSetText ([_value, _digits] call zmgrs_fnc_padDigits);
+            _ctrl ctrlSetText ([_value, _digits] call mgrs_fnc_padDigits);
             _ctrl ctrlSetBackgroundColor [1, 1, 1, 0.62];
             _ctrl ctrlSetTextColor [0, 0, 0, 1];
             _ctrl ctrlSetPosition [_px, _py, 0.042, 0.022];
@@ -284,7 +284,7 @@ for "_b" from -80 to 80 step 8 do {
         private _scr = _map ctrlMapWorldToScreen [_xMin, _by];
         private _py = (_scr select 1) - 0.011;
         if ((_py > 0.08) && (_py < 0.93)) then {
-            private _band = [_b + 0.01] call zmgrs_fnc_latToBand;
+            private _band = [_b + 0.01] call mgrs_fnc_latToBand;
             private _ctrl = _pool select _used;
             _ctrl ctrlSetText (format ["%1° %2%3", _b, _zone, _band]);
             _ctrl ctrlSetBackgroundColor [0.9, 0.45, 0, 0.8];

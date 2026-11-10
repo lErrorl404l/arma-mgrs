@@ -216,7 +216,7 @@ That is the cost of not trusting authors: some real maps lose a real
 reference, but no map gets a false one.
 
 The synthetic origin is declared in `tools/synthetic_baseline.json` and
-written into `CfgPatches >> zmgrs_geo`. The runtime reads it from there. The
+written into `CfgPatches >> mgrs_geo`. The runtime reads it from there. The
 zone, datum, and origin are a policy, not a per-map accident. All synthetic
 maps share the origin, so the reference is consistent and briefable.
 
