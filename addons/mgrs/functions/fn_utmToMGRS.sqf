@@ -6,7 +6,7 @@
  */
 params ["_zone", "_easting", "_northing", "_lat", ["_digits", 4, [0]]];
 
-private _band = [_lat] call zmgrs_fnc_latToBand;
+private _band = [_lat] call mgrs_fnc_latToBand;
 
 private _colSets = ["ABCDEFGH", "JKLMNPQR", "STUVWXYZ"];
 private _colSet = toArray (_colSets select ((_zone - 1) mod 3));
@@ -31,6 +31,6 @@ format [
     _band,
     _col,
     _row,
-    [_east, _digits] call zmgrs_fnc_padDigits,
-    [_north, _digits] call zmgrs_fnc_padDigits
+    [_east, _digits] call mgrs_fnc_padDigits,
+    [_north, _digits] call mgrs_fnc_padDigits
 ]

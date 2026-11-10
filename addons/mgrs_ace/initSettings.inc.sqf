@@ -1,27 +1,27 @@
 [
-    "zmgrs_ace_enabled",
+    "mgrs_ace_enabled",
     "CHECKBOX",
     [localize "STR_MGRS_ACE_ENABLED_NAME", localize "STR_MGRS_ACE_ENABLED_DESC"],
     ["MGRS", "ACE Compatibility"],
     true,
     0,
-    {["zmgrs_ace_enabled", _this] call zmgrs_ace_fnc_settingChanged},
+    {["mgrs_ace_enabled", _this] call mgrs_ace_fnc_settingChanged},
     true
 ] call CBA_fnc_addSetting;
 
 [
-    "zmgrs_ace_interval",
+    "mgrs_ace_interval",
     "SLIDER",
     [localize "STR_MGRS_ACE_INTERVAL_NAME", localize "STR_MGRS_ACE_INTERVAL_DESC"],
     ["MGRS", "ACE Compatibility"],
     [0.05, 1.0, 0.1, 2],
     0,
-    {["zmgrs_ace_interval", _this] call zmgrs_ace_fnc_settingChanged},
+    {["mgrs_ace_interval", _this] call mgrs_ace_fnc_settingChanged},
     true
 ] call CBA_fnc_addSetting;
 
 [
-    "zmgrs_ace_dagrFull",
+    "mgrs_ace_dagrFull",
     "CHECKBOX",
     [localize "STR_MGRS_ACE_DAGR_FULL_NAME", localize "STR_MGRS_ACE_DAGR_FULL_DESC"],
     ["MGRS", "ACE Compatibility"],
@@ -29,7 +29,7 @@
 ] call CBA_fnc_addSetting;
 
 [
-    "zmgrs_ace_dagrDigits",
+    "mgrs_ace_dagrDigits",
     "LIST",
     [localize "STR_MGRS_ACE_DAGR_DIGITS_NAME", localize "STR_MGRS_ACE_DAGR_DIGITS_DESC"],
     ["MGRS", "ACE Compatibility"],
@@ -37,7 +37,7 @@
 ] call CBA_fnc_addSetting;
 
 [
-    "zmgrs_ace_microDigits",
+    "mgrs_ace_microDigits",
     "LIST",
     [localize "STR_MGRS_ACE_MICRO_DIGITS_NAME", localize "STR_MGRS_ACE_MICRO_DIGITS_DESC"],
     ["MGRS", "ACE Compatibility"],

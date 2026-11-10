@@ -7,8 +7,8 @@ private _pos = getPos _player;
 
 switch (_mode) do {
     case "dagr": {
-        private _digits = missionNamespace getVariable ["zmgrs_ace_dagrDigits", 4];
-        private _mgrs = [_pos, _digits] call zmgrs_fnc_posToMgrs;
+        private _digits = missionNamespace getVariable ["mgrs_ace_dagrDigits", 4];
+        private _mgrs = [_pos, _digits] call mgrs_fnc_posToMGRS;
         if (_mgrs == "") exitWith {};
 
         private _parts = _mgrs splitString " ";
@@ -23,7 +23,7 @@ switch (_mode) do {
         private _ctrl = _display displayCtrl 266851;
         if (isNull _ctrl) exitWith {};
 
-        private _text = if (missionNamespace getVariable ["zmgrs_ace_dagrFull", false]) then {
+        private _text = if (missionNamespace getVariable ["mgrs_ace_dagrFull", false]) then {
             format ["%1 %2 %3 %4", _parts select 0, _parts select 1, _parts select 2, _parts select 3]
         } else {
             format ["%1 %2", _parts select 2, _parts select 3]
@@ -31,8 +31,8 @@ switch (_mode) do {
         _ctrl ctrlSetText _text;
     };
     case "micro": {
-        private _digits = missionNamespace getVariable ["zmgrs_ace_microDigits", 5];
-        private _mgrs = [_pos, _digits] call zmgrs_fnc_posToMgrs;
+        private _digits = missionNamespace getVariable ["mgrs_ace_microDigits", 5];
+        private _mgrs = [_pos, _digits] call mgrs_fnc_posToMGRS;
         if (_mgrs == "") exitWith {};
 
         private _parts = _mgrs splitString " ";

@@ -1,5 +1,5 @@
 [
-    "zmgrs_defaultDigits",
+    "mgrs_defaultDigits",
     "LIST",
     [localize "STR_MGRS_CORE_DEFAULT_DIGITS_NAME", localize "STR_MGRS_CORE_DEFAULT_DIGITS_DESC"],
     ["MGRS", "Core"],
@@ -7,7 +7,7 @@
 ] call CBA_fnc_addSetting;
 
 [
-    "zmgrs_debug",
+    "mgrs_debug",
     "CHECKBOX",
     [localize "STR_MGRS_CORE_DEBUG_NAME", localize "STR_MGRS_CORE_DEBUG_DESC"],
     ["MGRS", "Core"],

@@ -1,6 +1,35 @@
 {
-  "_comment": "Optional real-world boxes. worldName -> [latMin, lonMin, latMax, lonMax]. Keys starting with _ are ignored. Entries here win over automatic resolution and are written into the generated mgrsGeo table.",
+  "_comment": "Optional real-world boxes. worldName -> [latMin, lonMin, latMax, lonMax], or an object with box, controlPoints, source, confidence and biome. Keys starting with _ are ignored. Entries here win over automatic resolution and are written into the generated mgrsGeo table.",
   "_example": {
-    "some_real_map": [35.0, 62.0, 36.0, 63.0]
-  }
+    "some_real_map": [
+      35.0,
+      62.0,
+      36.0,
+      63.0
+    ]
+  },
+  "malden": [
+    38.742,
+    20.627,
+    38.858,
+    20.773
+  ],
+  "enoch": [
+    49.109,
+    17.2451,
+    49.224,
+    17.4209
+  ],
+  "tanoa": [
+    -17.7673,
+    178.71,
+    -17.6287,
+    178.856
+  ],
+  "stratis": [
+    39.4682,
+    24.9573,
+    39.5418,
+    25.0527
+  ]
 }

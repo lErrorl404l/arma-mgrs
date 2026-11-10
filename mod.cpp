@@ -1,9 +1,9 @@
-name = "MGRS Grid Reference";
+name = "Arma MGRS";
 picture = "";
 logo = "";
 logoOver = "";
-tooltip = "MGRS Grid Reference";
-tooltipOwned = "MGRS Grid Reference";
+tooltip = "Arma MGRS";
+tooltipOwned = "Arma MGRS";
 overview = "MGRS-derived engine grid patch and georeference API for Arma 3 terrains.";
 author = "lErrorl404l";
 actionName = "GitHub";

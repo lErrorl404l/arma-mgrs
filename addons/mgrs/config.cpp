@@ -1,8 +1,8 @@
 #include "\z\mgrs\addons\mgrs\script_mod.hpp"
 
 class CfgPatches {
-    class zmgrs_main {
-        name = "MGRS Grid Reference";
+    class mgrs_main {
+        name = "Arma MGRS";
         author = AUTHOR;
         authors[] = AUTHORS;
         url = URL;
@@ -14,4 +14,26 @@ class CfgPatches {
     };
 };
 
-#include "CfgEventHandlers.hpp"
+class CfgFunctions {
+    class mgrs {
+        class core {
+            file = "\z\mgrs\addons\mgrs\functions";
+            class getGeorefInfo {};
+            class getGeoref {};
+            class biomeBand {};
+            class biomeClimate {};
+            class biomeClassify {};
+            class biomeScan {};
+            class syntheticGeoref {};
+            class worldToLatLon {};
+            class latLonToUTM {};
+            class latToBand {};
+            class padDigits {};
+            class utmToMGRS {};
+            class posToMGRS {};
+            class posToUTM {};
+            class setGeoref {};
+            class mapGridPosition {};
+        };
+    };
+};

@@ -16,6 +16,7 @@
       "provenance": "real/declared",
       "source": "known",
       "virtual": false,
+      "confidence": 0.85,
       "geo": [
         39.7185,
         25.012,
@@ -24,83 +25,762 @@
       ],
       "mapSize": 30720.0,
       "mapZone": 35,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_altis.pbo"
+      "pbo": "map_altis.pbo",
+      "reason": "known"
     },
     {
       "name": "Stratis",
       "provenance": "real/declared",
-      "source": "known",
+      "source": "override",
       "virtual": false,
+      "confidence": 0.8,
       "geo": [
-        39.45,
-        24.95,
-        39.56,
-        25.06
+        39.4682,
+        24.9573,
+        39.5418,
+        25.0527
       ],
       "mapSize": 8192.0,
       "mapZone": 35,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_stratis.pbo"
+      "pbo": "map_stratis.pbo",
+      "reason": "override"
     },
     {
       "name": "VR",
       "provenance": "real/declared",
       "source": "known",
       "virtual": false,
+      "confidence": 0.85,
       "geo": [
         0.0,
         0.0,
         0.09,
         0.09
       ],
-      "mapSize": 0.0,
+      "mapSize": 8192.0,
       "mapZone": 0,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_vr.pbo"
+      "pbo": "map_vr.pbo",
+      "reason": "known"
     },
     {
       "name": "Malden",
       "provenance": "real/declared",
-      "source": "known",
+      "source": "override",
       "virtual": false,
+      "confidence": 0.8,
       "geo": [
-        39.7185,
-        25.012,
-        40.0946,
-        25.4815
+        38.742,
+        20.627,
+        38.858,
+        20.773
       ],
       "mapSize": 12800.0,
       "mapZone": 35,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Argo/Addons/map_malden.pbo"
+      "pbo": "map_malden.pbo",
+      "reason": "override"
     },
     {
       "name": "Enoch",
       "provenance": "real/declared",
-      "source": "known",
+      "source": "override",
       "virtual": false,
+      "confidence": 0.8,
       "geo": [
-        53.8,
-        22.7,
-        54.2,
-        23.2
+        49.109,
+        17.2451,
+        49.224,
+        17.4209
       ],
       "mapSize": 12800.0,
       "mapZone": 34,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Enoch/Addons/map_enoch.pbo"
+      "pbo": "map_enoch.pbo",
+      "reason": "override"
     },
     {
       "name": "Tanoa",
       "provenance": "real/declared",
-      "source": "known",
+      "source": "override",
       "virtual": false,
+      "confidence": 0.8,
       "geo": [
-        -20.268,
-        174.003,
-        -20.1353,
-        174.146
+        -17.7673,
+        178.71,
+        -17.6287,
+        178.856
       ],
       "mapSize": 15360.0,
       "mapZone": 60,
-      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Expansion/Addons/map_tanoabuka.pbo"
+      "pbo": "map_tanoabuka.pbo",
+      "reason": "override"
+    },
+    {
+      "name": "Mountains_ACR",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        33.97125404240029,
+        65.9653261099963,
+        34.02874595759971,
+        66.0346738900037
+      ],
+      "mapSize": 6400.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_afghan_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Woodland_ACR",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.96550485088034,
+        29.951216492278903,
+        45.03449514911966,
+        30.048783507721097
+      ],
+      "mapSize": 7680.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_bohemia_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Bootcamp_ACR",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.982752425440175,
+        29.97560824613945,
+        45.017247574559825,
+        30.02439175386055
+      ],
+      "mapSize": 3840.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_bootcamp_acr_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Chernarus",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.931009701760686,
+        29.9024329845578,
+        45.068990298239314,
+        30.0975670154422
+      ],
+      "mapSize": 15360.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_chernarus_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Chernarus_Summer",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.931009701760686,
+        29.9024329845578,
+        45.068990298239314,
+        30.0975670154422
+      ],
+      "mapSize": 15360.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_chernarus_summer_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Chernarus_Winter",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.931009701760686,
+        29.9024329845578,
+        45.068990298239314,
+        30.0975670154422
+      ],
+      "mapSize": 15360.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_chernarus_winter_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Porto",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        34.97700323392023,
+        -44.02807386765387,
+        35.02299676607977,
+        -43.97192613234613
+      ],
+      "mapSize": 5120.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_desert2_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Intro",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        39.97700323392023,
+        -40.0300201460716,
+        40.02299676607977,
+        -39.9699798539284
+      ],
+      "mapSize": 5120.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_desert_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Desert_E",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        34.99080129356809,
+        65.78877045293845,
+        35.00919870643191,
+        65.81122954706154
+      ],
+      "mapSize": 2048.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_desert_e_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "ProvingGrounds_PMC",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        48.95480129356809,
+        17.337988967704273,
+        48.97319870643191,
+        17.366011032295727
+      ],
+      "mapSize": 2048.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_provinggrounds_pmc_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Sara",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        39.858012935680925,
+        -40.13999276497738,
+        40.04198706431908,
+        -39.90000723502263
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_sara_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Sara_dbe1",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        39.858012935680925,
+        -40.13999276497738,
+        40.04198706431908,
+        -39.90000723502263
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_sara_dbe1_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "SaraLite",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        39.90400646784046,
+        -40.079996382488694,
+        39.995993532159545,
+        -39.96000361751131
+      ],
+      "mapSize": 10240.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_saralite_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Shapur_BAF",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        32.99080129356809,
+        63.98903180010902,
+        33.00919870643191,
+        64.01096819989098
+      ],
+      "mapSize": 2048.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_shapur_baf_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Takistan",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        33.94250808480057,
+        65.9306522199926,
+        34.05749191519943,
+        66.0693477800074
+      ],
+      "mapSize": 12800.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_takistan_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Utes",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        44.97700323392023,
+        29.96747766151927,
+        45.02299676607977,
+        30.03252233848073
+      ],
+      "mapSize": 5120.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_utes_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "Zargabad",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        33.96320517427237,
+        65.95561742079526,
+        34.03679482572763,
+        66.04438257920474
+      ],
+      "mapSize": 8192.0,
+      "mapZone": 0,
+      "pbo": "cup_terrains_maps_zargabad_c.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "kerama",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.3,
+      "geo": [
+        25.90801293568092,
+        126.89765501373998,
+        26.09198706431908,
+        127.10234498626002
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 31,
+      "pbo": "Kerama.pbo",
+      "reason": "latlon-only"
+    },
+    {
+      "name": "UMB_Colombia",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        -0.09198706431908013,
+        -70.09198706431908,
+        0.09198706431908013,
+        -69.90801293568092
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "UMB_Colombia.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "bala_murghab_summer",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.52,
+      "geo": [
+        35.492012935680926,
+        63.21589140947025,
+        35.67598706431908,
+        63.44210859052975
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 41,
+      "pbo": "bala_murghab_summer.pbo",
+      "reason": "latlon,zone,scale,scale"
+    },
+    {
+      "name": "bala_murghab_winter",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.52,
+      "geo": [
+        35.492012935680926,
+        63.21589140947025,
+        35.67598706431908,
+        63.44210859052975
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 41,
+      "pbo": "bala_murghab_winter.pbo",
+      "reason": "latlon,zone,scale,scale"
+    },
+    {
+      "name": "clafghan",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.44,
+      "geo": [
+        33.96320517427237,
+        68.95561742079526,
+        34.03679482572763,
+        69.04438257920474
+      ],
+      "mapSize": 0.0,
+      "mapZone": 0,
+      "pbo": "clafghan.pbo",
+      "reason": "latlon"
+    },
+    {
+      "name": "dagger_island_summer",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.3,
+      "geo": [
+        49.40001293568092,
+        -124.41661568386004,
+        49.583987064319075,
+        -124.13338431613997
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 35,
+      "pbo": "dagger_island_summer.pbo",
+      "reason": "latlon-only"
+    },
+    {
+      "name": "kunduz_valley",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.52,
+      "geo": [
+        36.62801293568092,
+        68.74524095171672,
+        36.81198706431908,
+        68.97475904828327
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 42,
+      "pbo": "kunduz_river.pbo",
+      "reason": "latlon,zone,scale,scale"
+    },
+    {
+      "name": "lythium",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.3,
+      "geo": [
+        33.90801293568092,
+        68.88904355198814,
+        34.09198706431908,
+        69.11095644801186
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 31,
+      "pbo": "lythium.pbo",
+      "reason": "latlon-only"
+    },
+    {
+      "name": "NorthTakistan",
+      "provenance": "synthetic",
+      "source": "synthetic",
+      "virtual": true,
+      "confidence": 0.1,
+      "geo": [
+        29.90801293568092,
+        2.893782487306831,
+        30.09198706431908,
+        3.106217512693169
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 42,
+      "pbo": "map_north_takistan.pbo",
+      "reason": "no usable candidate"
+    },
+    {
+      "name": "opx_tac",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        33.99080129356809,
+        64.98890435519881,
+        34.00919870643191,
+        65.01109564480119
+      ],
+      "mapSize": 2048.0,
+      "mapZone": 0,
+      "pbo": "opx_tac.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "oski_corran",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.52,
+      "geo": [
+        56.656006467840456,
+        -5.30377789577221,
+        56.74799353215954,
+        -5.136222104227789
+      ],
+      "mapSize": 10240.0,
+      "mapZone": 30,
+      "pbo": "oski_corran.pbo",
+      "reason": "latlon,zone,scale,scale"
+    },
+    {
+      "name": "swu_public_Imber_uk",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        9.06481223392023,
+        147.6519708959554,
+        9.11080576607977,
+        147.69854910404462
+      ],
+      "mapSize": 5120.0,
+      "mapZone": 0,
+      "pbo": "swu_public_imber_map.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "tem_kujari",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.52,
+      "geo": [
+        11.926410348544735,
+        12.924766311955315,
+        12.073589651455265,
+        13.075233688044685
+      ],
+      "mapSize": 16384.0,
+      "mapZone": 33,
+      "pbo": "tem_kujari.pbo",
+      "reason": "latlon,zone,scale,scale"
+    },
+    {
+      "name": "WL_Rosche",
+      "provenance": "real/declared",
+      "source": "mapArea-root",
+      "virtual": false,
+      "confidence": 0.63,
+      "geo": [
+        52.927483,
+        10.5640335,
+        53.063946,
+        10.791751
+      ],
+      "mapSize": 15360.0,
+      "mapZone": 35,
+      "pbo": "WL_Rosche.pbo",
+      "reason": "latlon,zone-stale,scale,scale"
+    },
+    {
+      "name": "VEE_ArcticExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_ArcticExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_DesertExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_DesertExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_GreenExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_GreenExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_SpaceExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_SpaceExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_TasmanSea",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_TasmanSea.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_UrbanExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_UrbanExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "VEE_VaccumExpanse",
+      "provenance": "derived",
+      "source": "latlon",
+      "virtual": false,
+      "confidence": 0.48000000000000004,
+      "geo": [
+        35.005012935680924,
+        16.369571091737917,
+        35.18898706431908,
+        16.59442890826208
+      ],
+      "mapSize": 20480.0,
+      "mapZone": 0,
+      "pbo": "VEE_VaccumExpanse.pbo",
+      "reason": "latlon,scale,scale"
+    },
+    {
+      "name": "brecon_becons",
+      "provenance": "real/declared",
+      "source": "mapArea",
+      "virtual": false,
+      "confidence": 0.77,
+      "geo": [
+        51.81597,
+        -3.4842489,
+        51.94323,
+        -3.2807791
+      ],
+      "mapSize": 14080.0,
+      "mapZone": 30,
+      "pbo": "brecon_becons.pbo",
+      "reason": "latlon,zone,scale,scale"
     }
   ],
-  "errors": []
+  "errors": [
+    "mb_bushes.pbo: [Errno 2] No such file or directory: 'config.bin'",
+    "mb_clutter.pbo: [Errno 2] No such file or directory: 'config.bin'",
+    "mb_rocks.pbo: [Errno 2] No such file or directory: 'config.bin'",
+    "mb_trees.pbo: [Errno 2] No such file or directory: 'config.bin'"
+  ]
 }

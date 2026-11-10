@@ -26,6 +26,7 @@ import argparse
 import json
 import math
 import re
+import struct
 import subprocess
 import sys
 import tempfile
@@ -44,10 +45,12 @@ DEFAULT_BASELINE = {
 # Corrections for official maps whose own metadata is missing or wrong.
 KNOWN = {
     "altis": [39.7185, 25.0120, 40.0946, 25.4815],
-    "stratis": [39.4500, 24.9500, 39.5600, 25.0600],
-    "enoch": [53.8000, 22.7000, 54.2000, 23.2000],
-    "malden": [39.7185, 25.0120, 40.0946, 25.4815],
-    "tanoa": [-20.2680, 174.0030, -20.1353, 174.1460],
+    # Metric square around the real island centre; a hand box stretches it.
+    "stratis": [39.4682, 24.9573, 39.5418, 25.0527],
+    "malden": [38.7420, 20.6270, 38.8580, 20.7730],
+    # Metric square; the previous 0.146 degree span was 10.2 km wide.
+    "enoch": [49.1090, 17.2451, 49.2240, 17.4209],
+    "tanoa": [-17.7673, 178.7100, -17.6287, 178.8560],
     "vr": [0.0000, 0.0000, 0.0900, 0.0900],
 }
 
@@ -61,19 +64,22 @@ WGS84_E6 = WGS84_E4 * WGS84_E2
 WGS84_EP2 = WGS84_E2 / (1 - WGS84_E2)
 
 
-def lat_lon_to_utm(lat: float, lon: float) -> tuple[int, float, float]:
-    zone = min(60, max(1, math.floor((lon + 180) / 6) + 1))
-    if 56 <= lat < 64 and 3 <= lon < 12:
-        zone = 32
-    if 72 <= lat < 84:
-        if 0 <= lon < 9:
-            zone = 31
-        elif 9 <= lon < 21:
-            zone = 33
-        elif 21 <= lon < 33:
-            zone = 35
-        elif 33 <= lon < 42:
-            zone = 37
+def lat_lon_to_utm(
+    lat: float, lon: float, zone: int | None = None
+) -> tuple[int, float, float]:
+    if zone is None:
+        zone = min(60, max(1, math.floor((lon + 180) / 6) + 1))
+        if 56 <= lat < 64 and 3 <= lon < 12:
+            zone = 32
+        if 72 <= lat < 84:
+            if 0 <= lon < 9:
+                zone = 31
+            elif 9 <= lon < 21:
+                zone = 33
+            elif 21 <= lon < 33:
+                zone = 35
+            elif 33 <= lon < 42:
+                zone = 37
 
     lon0 = (zone - 1) * 6 - 180 + 3
     dlon = math.radians(lon - lon0)
@@ -132,17 +138,30 @@ class World:
     latitude: float | None = None
     longitude: float | None = None
     mgrs_geo: list[float] = field(default_factory=list)
+    mgrs_control: list[list[float]] = field(default_factory=list)
+    mgrs_source: str = ""
+    mgrs_confidence: float = 0.0
+    mgrs_biome: str = ""
     root_map_area: list[float] = field(default_factory=list)
     root_map_zone: int = 0
     root_latitude: float | None = None
     root_longitude: float | None = None
     grid_zoom_max: list[float] = field(default_factory=list)
+    control: list[list[float]] = field(default_factory=list)
+    source: str = ""
+    confidence: float = 0.0
+    biome: str = ""
+    reason: str = ""
 
     def parse(self) -> None:
         self.map_size = number(self.body, "mapSize") or 0.0
         self.map_zone = int(number(self.body, "mapZone") or 0)
         self.map_area = array(self.body, "mapArea")
         self.mgrs_geo = array(self.body, "mgrsGeo")
+        self.mgrs_control = nested_array(self.body, "mgrsControl")
+        self.mgrs_source = string_value(self.body, "mgrsSource")
+        self.mgrs_confidence = number(self.body, "mgrsConfidence") or 0.0
+        self.mgrs_biome = string_value(self.body, "mgrsBiome")
         self.latitude = number(self.body, "latitude")
         self.longitude = number(self.body, "longitude")
 
@@ -155,6 +174,26 @@ class World:
                 zoom = number(body, "zoomMax")
                 if zoom is not None:
                     self.grid_zoom_max.append(zoom)
+
+
+@dataclass
+class TerrainData:
+    box: list[float]
+    controls: list[list[float]] = field(default_factory=list)
+    source: str = "override"
+    confidence: float = 0.8
+    biome: str = ""
+
+
+@dataclass
+class Resolved:
+    box: list[float]
+    source: str
+    virtual: bool
+    confidence: float
+    controls: list[list[float]] = field(default_factory=list)
+    biome: str = ""
+    reason: str = ""
 
 
 def run(cmd: list[str]) -> bytes:
@@ -229,6 +268,33 @@ def array(body: str, name: str) -> list[float]:
     return values
 
 
+def nested_array(body: str, name: str) -> list[list[float]]:
+    match = re.search(
+        r"(?ms)^\s*" + re.escape(name) + r"\s*\[\s*\]\s*=\s*\{(.*)\}\s*;", body
+    )
+    if not match:
+        return []
+    rows = []
+    for block in re.findall(r"\{([^{}]*)\}", match.group(1)):
+        values = []
+        for token in block.split(","):
+            token = token.strip()
+            if not token:
+                continue
+            try:
+                values.append(float(token))
+            except ValueError:
+                return []
+        if len(values) == 4:
+            rows.append(values)
+    return rows
+
+
+def string_value(body: str, name: str) -> str:
+    match = re.search(r"(?m)^\s*" + re.escape(name) + r'\s*=\s*"([^"]*)"\s*;', body)
+    return match.group(1) if match else ""
+
+
 def extract_config(pbo: Path) -> str | None:
     with tempfile.TemporaryDirectory() as tmp:
         raw = Path(tmp) / "config.bin"
@@ -271,11 +337,21 @@ def parse_worlds(pbo: Path) -> list[World]:
                 "class Grid" not in body
                 and "mapArea" not in body
                 and "latitude" not in body
+                and "mapSize" not in body
             ):
                 continue
             world = World(name=name, parent=parent, pbo=str(pbo), body=body)
             world.parse()
             world.parse_grid()
+            if world.map_size <= 0:
+                size = wrp_size(pbo, name)
+                if size:
+                    world.map_size = size
+            if not world.grid_zoom_max and world.map_size > 0:
+                # Ported terrains often ship no Grid block. The tier thresholds
+                # are computed from the box and mapSize, so only the gate needs
+                # a value.
+                world.grid_zoom_max = [0.01, 0.1, 0.5, 1e30]
             world.root_map_area = root_area
             world.root_map_zone = root_zone
             world.root_latitude = root_lat
@@ -351,48 +427,244 @@ def area_centre(box: list[float]) -> tuple[float, float]:
     return (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
 
 
-def area_conflicts(
-    box: list[float], latitude: float | None, longitude: float | None
-) -> bool:
-    """True when the declared box and the lat/lon point disagree badly.
+OFFICIAL_SIZES = {
+    "altis": 30720.0,
+    "stratis": 8192.0,
+    "malden": 12800.0,
+    "enoch": 12800.0,
+    "tanoa": 15360.0,
+    "vr": 8192.0,
+}
 
-    Copied metadata is common: Rosche carries Altis's mapArea and North
-    Takistan carries Tanoa's. A 0.5 degree tolerance is about 55 km.
+
+def box_metrics(box: list[float]) -> tuple[float, float]:
+    """Return the box width and height in metres at the box centre."""
+    centre_lat, _ = area_centre(box)
+    height = (box[2] - box[0]) * METRES_PER_DEGREE
+    width = (
+        (box[3] - box[1])
+        * METRES_PER_DEGREE
+        * max(0.05, math.cos(math.radians(centre_lat)))
+    )
+    return width, height
+
+
+def inherited_box(box: list[float], world: World) -> str:
+    """Name the official map whose box this world copied, or "".
+
+    A copied box on a map of a different size is inherited metadata, not a
+    real reference. This is common on ported terrains.
     """
-    if latitude is None or longitude is None:
-        return False
-    lat = -latitude
-    if not (-80.0 <= lat <= 84.0 and -180.0 <= longitude <= 180.0):
-        return False
+    if world.map_size <= 0:
+        return ""
+    for name, known in KNOWN.items():
+        if name == world.name.lower():
+            continue
+        if all(abs(a - b) < 1e-4 for a, b in zip(box, known)):
+            size = OFFICIAL_SIZES.get(name)
+            if size and abs(world.map_size - size) / size > 0.25:
+                return name
+    return ""
+
+
+def inherited_point(world: World) -> str:
+    """Name the official map whose centre this world copied, or ""."""
+    if world.latitude is None or world.longitude is None:
+        return ""
+    lat = -world.latitude
+    lon = world.longitude
+    for name, known in KNOWN.items():
+        if name == world.name.lower():
+            continue
+        centre_lat, centre_lon = area_centre(known)
+        if abs(centre_lat - lat) <= 0.05 and abs(centre_lon - lon) <= 0.05:
+            return name
+    return ""
+
+
+def score_box(box: list[float], world: World) -> tuple[float, str]:
+    """Score a candidate box against the other metadata on the world."""
+    score = 0.0
+    notes: list[str] = []
+    width, height = box_metrics(box)
     centre_lat, centre_lon = area_centre(box)
-    return abs(centre_lat - lat) > 0.5 or abs(centre_lon - longitude) > 0.5
+
+    delta: float | None = None
+    if world.latitude is not None and world.longitude is not None:
+        lat = -world.latitude
+        delta = max(abs(centre_lat - lat), abs(centre_lon - world.longitude))
+        if delta <= 0.1:
+            score += 2.0
+            notes.append("latlon")
+        elif delta <= 0.5:
+            score += 1.0
+            notes.append("latlon-near")
+        elif delta <= 2.0:
+            score -= 1.0
+            notes.append("latlon-off")
+        else:
+            score -= 10.0
+            notes.append("latlon-far")
+
+    if 1 <= world.map_zone <= 60:
+        if zone_for(centre_lon) == world.map_zone:
+            score += 2.0
+            notes.append("zone")
+        elif delta is not None and delta <= 0.5:
+            notes.append("zone-stale")
+        else:
+            score -= 10.0
+            notes.append("zone-mismatch")
+
+    if world.map_size > 0:
+        for ratio in (width / world.map_size, height / world.map_size):
+            if 0.75 <= ratio <= 1.33:
+                score += 1.0
+                notes.append("scale")
+            elif 0.5 <= ratio <= 2.0:
+                pass
+            else:
+                score -= 3.0
+                notes.append("scale-off")
+        smaller = min(width, height)
+        if smaller > 0 and max(width, height) / smaller > 2.0:
+            score -= 2.0
+            notes.append("anisotropy")
+
+    copied = inherited_box(box, world)
+    if copied:
+        score -= 10.0
+        notes.append(f"copied:{copied}")
+
+    return score, ",".join(notes)
 
 
-def load_overrides(path: Path) -> dict[str, list[float]]:
+_WRP_CACHE: dict[tuple[str, str], float | None] = {}
+_WRP_INDEX: dict[str, dict[str, tuple[Path, str]]] = {}
+
+
+def wrp_index(directory: Path) -> dict[str, tuple[Path, str]]:
+    """Map every WRP entry name in a mod directory to its PBO and exact name."""
+    key = str(directory)
+    if key in _WRP_INDEX:
+        return _WRP_INDEX[key]
+
+    index: dict[str, tuple[Path, str]] = {}
+    for candidate in sorted(directory.glob("*.pbo")):
+        if candidate.stem.lower().endswith("_c"):
+            continue
+        try:
+            listing = run(["hemtt", "utils", "pbo", "inspect", str(candidate)]).decode(
+                "utf-8", "replace"
+            )
+        except RuntimeError:
+            continue
+        for line in listing.splitlines():
+            for part in line.split("│"):
+                token = part.strip()
+                if token.lower().endswith(".wrp"):
+                    index[token.lower()] = (candidate, token)
+    _WRP_INDEX[key] = index
+    return index
+
+
+def wrp_size(pbo: Path, name: str) -> float | None:
+    """Read the terrain size in metres from the matching WRP header.
+
+    The config of a ported map often has no mapSize. The WRP header carries
+    the cell count and the cell size, and their product is the world size.
+    A world whose WRP has a different name falls back to the single WRP in
+    its own data PBO.
+    """
+    key = (str(pbo.parent), name.lower())
+    if key in _WRP_CACHE:
+        return _WRP_CACHE[key]
+
+    result = None
+    index = wrp_index(pbo.parent)
+    hit = index.get(f"{name.lower()}.wrp")
+
+    if hit is None:
+        stem = pbo.stem[:-2] if pbo.stem.lower().endswith("_c") else pbo.stem
+        matches = [
+            entry for entry in index.values() if entry[0].stem.lower() == stem.lower()
+        ]
+        if len(matches) == 1:
+            hit = matches[0]
+
+    if hit is not None:
+        source, entry = hit
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "terrain.wrp"
+            try:
+                run(["hemtt", "utils", "pbo", "extract", str(source), entry, str(out)])
+            except RuntimeError:
+                out = None
+            header = out.read_bytes()[:32] if out and out.exists() else b""
+        if len(header) >= 32 and header[:4] == b"OPRW":
+            cells = int.from_bytes(header[12:16], "little")
+            cell_size = struct.unpack("<f", header[28:32])[0]
+            size = cells * cell_size
+            if 1.0 <= cell_size <= 100.0 and 500.0 <= size <= 80000.0:
+                result = float(size)
+
+    _WRP_CACHE[key] = result
+    return result
+
+
+def load_terrain_data(path: Path) -> dict[str, TerrainData]:
     if not path.exists():
         return {}
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"Overrides ignored: {exc}", file=sys.stderr)
+        print(f"Terrain data ignored: {exc}", file=sys.stderr)
         return {}
-    overrides: dict[str, list[float]] = {}
+    result: dict[str, TerrainData] = {}
     for key, value in data.items():
         if key.startswith("_"):
             continue
-        if (
-            isinstance(value, list)
-            and len(value) == 4
-            and all(isinstance(item, (int, float)) for item in value)
-            and valid_box(*(float(item) for item in value))
-        ):
-            overrides[key.lower()] = [float(item) for item in value]
+        box: list[float] = []
+        controls: list[list[float]] = []
+        source = "override"
+        confidence = 0.8
+        biome = ""
+        if isinstance(value, list) and len(value) == 4:
+            box = [float(item) for item in value]
+        elif isinstance(value, dict):
+            raw_box = value.get("box", [])
+            if isinstance(raw_box, list) and len(raw_box) == 4:
+                box = [float(item) for item in raw_box]
+            raw_controls = value.get("controlPoints", [])
+            if isinstance(raw_controls, list):
+                for control in raw_controls:
+                    if (
+                        isinstance(control, list)
+                        and len(control) == 4
+                        and all(isinstance(item, (int, float)) for item in control)
+                    ):
+                        controls.append([float(item) for item in control])
+            if isinstance(value.get("source"), str):
+                source = value["source"]
+            if isinstance(value.get("confidence"), (int, float)):
+                confidence = max(0.0, min(1.0, float(value["confidence"])))
+            if isinstance(value.get("biome"), str):
+                biome = value["biome"]
         else:
             print(
-                f"Override ignored for {key}: expected four valid numbers",
+                f"Terrain data ignored for {key}: expected box or object",
                 file=sys.stderr,
             )
-    return overrides
+            continue
+        if len(box) != 4 or not valid_box(*box):
+            print(f"Terrain data ignored for {key}: invalid box", file=sys.stderr)
+            continue
+        result[key.lower()] = TerrainData(box, controls, source, confidence, biome)
+    return result
+
+
+def load_overrides(path: Path) -> dict[str, list[float]]:
+    return {key: value.box for key, value in load_terrain_data(path).items()}
 
 
 def load_baseline(path: Path) -> dict:
@@ -434,45 +706,123 @@ def load_baseline(path: Path) -> dict:
     return baseline
 
 
+def resolve_details(
+    world: World,
+    terrains: dict[str, TerrainData] | None = None,
+    baseline: dict | None = None,
+) -> Resolved:
+    baseline = baseline or DEFAULT_BASELINE
+
+    def finish(
+        box: list[float],
+        source: str,
+        virtual: bool,
+        confidence: float,
+        controls: list[list[float]] | None = None,
+        biome: str = "",
+        reason: str = "",
+    ) -> Resolved:
+        result = Resolved(
+            box, source, virtual, confidence, controls or [], biome, reason
+        )
+        world.control = result.controls
+        world.source = result.source
+        world.confidence = result.confidence
+        world.biome = result.biome
+        world.reason = result.reason
+        return result
+
+    if len(world.mgrs_geo) >= 4:
+        box = world.mgrs_geo[:4]
+        if valid_box(*box):
+            virtual = bool(world.mgrs_geo[4]) if len(world.mgrs_geo) >= 5 else False
+            confidence = world.mgrs_confidence or (
+                0.95 if len(world.mgrs_control) >= 3 else 0.9
+            )
+            return finish(
+                box,
+                world.mgrs_source or "mgrsGeo",
+                virtual,
+                confidence,
+                world.mgrs_control,
+                world.mgrs_biome,
+                "author",
+            )
+
+    data = (terrains or {}).get(world.name.lower())
+    if data and valid_box(*data.box):
+        return finish(
+            data.box,
+            data.source,
+            False,
+            data.confidence,
+            data.controls,
+            data.biome,
+            "override",
+        )
+
+    known = KNOWN.get(world.name.lower())
+    if known and valid_box(*known):
+        return finish(known, "known", False, 0.85, reason="known")
+
+    candidates: list[tuple[list[float], str, float, float]] = []
+    point_box = None
+    copied_point = inherited_point(world)
+    area = normalise_area(world.map_area, world.map_zone)
+    if area:
+        candidates.append((area, "mapArea", 0.65, 5.0))
+    root_area = normalise_area(
+        world.root_map_area, world.map_zone or world.root_map_zone
+    )
+    if root_area:
+        candidates.append((root_area, "mapArea-root", 0.55, 4.0))
+    if world.latitude is not None and world.longitude is not None:
+        point_box = from_lat_lon(world.latitude, world.longitude, world.map_size)
+        if point_box and not copied_point:
+            # A missing mapZone is expected on ported maps; only a declared
+            # zone that contradicts the longitude invalidates the point.
+            if (
+                not (1 <= world.map_zone <= 60)
+                or zone_for(world.longitude) == world.map_zone
+            ):
+                candidates.append((point_box, "latlon", 0.4, 3.0))
+
+    best: tuple[float, list[float], str, float, float, str] | None = None
+    for box, source, confidence, base in candidates:
+        score, notes = score_box(box, world)
+        total = base + score
+        if best is None or total > best[0]:
+            best = (total, box, source, confidence, base, notes)
+
+    if best and best[0] >= 1.0:
+        total, box, source, confidence, base, notes = best
+        adjusted = max(0.1, min(0.95, confidence + 0.02 * (total - base)))
+        return finish(box, source, False, adjusted, reason=notes)
+
+    if point_box and not copied_point:
+        return finish(point_box, "latlon", False, 0.3, reason="latlon-only")
+
+    return finish(
+        synthetic(world.map_size or 0.0, baseline),
+        "synthetic",
+        True,
+        0.1,
+        reason="no usable candidate",
+    )
+
+
 def resolve(
     world: World,
     overrides: dict[str, list[float]] | None = None,
     baseline: dict | None = None,
 ) -> tuple[list[float], str, bool]:
-    baseline = baseline or DEFAULT_BASELINE
-    if len(world.mgrs_geo) >= 4:
-        box = world.mgrs_geo[:4]
-        if valid_box(*box):
-            virtual = bool(world.mgrs_geo[4]) if len(world.mgrs_geo) >= 5 else False
-            return box, "mgrsGeo", virtual
-
-    override = (overrides or {}).get(world.name.lower())
-    if override and valid_box(*override):
-        return override, "override", False
-
-    known = KNOWN.get(world.name.lower())
-    if known and valid_box(*known):
-        return known, "known", False
-
-    area = normalise_area(world.map_area, world.map_zone)
-    if area and not area_conflicts(area, world.latitude, world.longitude):
-        return area, "mapArea", False
-
-    root_area = normalise_area(
-        world.root_map_area, world.map_zone or world.root_map_zone
-    )
-    if root_area and not area_conflicts(root_area, world.latitude, world.longitude):
-        return root_area, "mapArea-root", False
-
-    if world.latitude is not None and world.longitude is not None:
-        # Trust lat/lon only when the declared UTM zone agrees with the
-        # longitude. BI's fields are unreliable on their own.
-        if 1 <= world.map_zone <= 60 and zone_for(world.longitude) == world.map_zone:
-            box = from_lat_lon(world.latitude, world.longitude, world.map_size)
-            if box:
-                return box, "latlon", False
-
-    return synthetic(world.map_size or 0.0, baseline), "synthetic", True
+    terrains = None
+    if overrides:
+        terrains = {
+            key: TerrainData(box) for key, box in overrides.items() if valid_box(*box)
+        }
+    result = resolve_details(world, terrains, baseline)
+    return result.box, result.source, result.virtual
 
 
 def discover(game: Path | None, mods: list[Path], pbos: list[Path]) -> list[Path]:
@@ -500,6 +850,11 @@ def discover(game: Path | None, mods: list[Path], pbos: list[Path]) -> list[Path
     return unique
 
 
+def sanitise_message(message: str) -> str:
+    """Remove temporary and machine-specific paths from a report message."""
+    return re.sub(r"/tmp/[\w.\-]+/", "", message)
+
+
 def scan(paths: list[Path]) -> tuple[list[World], list[str]]:
     worlds: dict[str, World] = {}
     errors = []
@@ -508,7 +863,7 @@ def scan(paths: list[Path]) -> tuple[list[World], list[str]]:
         try:
             found = parse_worlds(pbo)
         except Exception as exc:  # noqa: BLE001 - report and continue
-            errors.append(f"{pbo}: {exc}")
+            errors.append(f"{pbo.name}: {sanitise_message(str(exc))}")
             continue
         for world in found:
             key = world.name.lower()
@@ -549,14 +904,15 @@ def grid_patch(world: World, box: list[float], enabled: bool) -> list[str]:
         return []
 
     lat_min, lon_min, lat_max, lon_max = box
-    sw = lat_lon_to_utm(lat_min, lon_min)
-    ne = lat_lon_to_utm(lat_max, lon_max)
+    centre = lat_lon_to_utm((lat_min + lat_max) / 2, (lon_min + lon_max) / 2)
+    zone = centre[0]
+    sw = lat_lon_to_utm(lat_min, lon_min, zone)
+    ne = lat_lon_to_utm(lat_max, lon_max, zone)
     scale_x = (ne[1] - sw[1]) / size
     scale_y = (ne[2] - sw[2]) / size
     if scale_x <= 0 or scale_y <= 0:
         return []
 
-    centre = lat_lon_to_utm((lat_min + lat_max) / 2, (lon_min + lon_max) / 2)
     square_e = math.floor(centre[1] / 100000.0) * 100000.0
     square_n = math.floor(centre[2] / 100000.0) * 100000.0
     east0 = sw[1] - square_e
@@ -627,7 +983,7 @@ def render_config(
         '#include "\\z\\mgrs\\addons\\mgrs\\script_mod.hpp"',
         "",
         "class CfgPatches {",
-        "    class zmgrs_geo {",
+        "    class mgrs_geo {",
         '        name = "MGRS georeference table";',
         "        author = AUTHOR;",
         "        authors[] = AUTHORS;",
@@ -659,6 +1015,18 @@ def render_config(
         values = ", ".join(f"{value:.6f}" for value in box)
         lines.append(f"    class {world.name}: {parent} {{")
         lines.append(f"        mgrsGeo[] = {{{values}, {1 if virtual else 0}}};")
+        if world.control:
+            controls = ", ".join(
+                "{" + ", ".join(f"{value:.6f}" for value in control) + "}"
+                for control in world.control
+            )
+            lines.append(f"        mgrsControl[] = {{{controls}}};")
+        if world.source:
+            lines.append(f'        mgrsSource = "{config_string(world.source)}";')
+        if world.confidence > 0:
+            lines.append(f"        mgrsConfidence = {world.confidence:.4f};")
+        if world.biome:
+            lines.append(f'        mgrsBiome = "{config_string(world.biome)}";')
         lines.extend(grid_lines.get(world.name.lower(), []))
         lines.append("    };")
     lines.append("};")
@@ -752,9 +1120,17 @@ def main() -> int:
         print("No CfgWorlds entries found.", file=sys.stderr)
         return 1
 
-    overrides = load_overrides(args.overrides)
+    overrides = load_terrain_data(args.overrides)
     baseline = load_baseline(args.baseline)
-    rows = [(world, *resolve(world, overrides, baseline)) for world in worlds]
+    rows = []
+    best: dict[str, tuple[float, tuple]] = {}
+    for world in worlds:
+        resolved = resolve_details(world, overrides, baseline)
+        key = world.name.lower()
+        entry = (world, resolved.box, resolved.source, resolved.virtual)
+        if key not in best or resolved.confidence > best[key][0]:
+            best[key] = (resolved.confidence, entry)
+    rows = [entry for _, entry in best.values()]
     grid = not args.no_grid
     config = render_config(rows, baseline, grid)
     report = render_report(rows, baseline, grid)
@@ -792,10 +1168,12 @@ def main() -> int:
                 "provenance": provenance(source, virtual),
                 "source": source,
                 "virtual": virtual,
+                "confidence": world.confidence,
                 "geo": box,
                 "mapSize": world.map_size,
                 "mapZone": world.map_zone,
-                "pbo": world.pbo,
+                "pbo": Path(world.pbo).name,
+                "reason": world.reason,
             }
             for world, box, source, virtual in rows
         ],

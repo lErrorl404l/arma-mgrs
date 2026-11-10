@@ -4,4 +4,4 @@
  */
 params [["_pos", [0, 0, 0], [[]], [2, 3]], ["_digits", -1, [0]]];
 
-[_pos, _digits] call zmgrs_fnc_posToMgrs
+[_pos, _digits] call mgrs_fnc_posToMGRS
