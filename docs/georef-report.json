@@ -1,0 +1,106 @@
+{
+  "baseline": {
+    "datum": "WGS84",
+    "zone": 31,
+    "origin": [
+      30.0,
+      3.0
+    ],
+    "version": "1.0.0",
+    "convergence": "world north assumed grid north",
+    "label": "Declared synthetic training baseline"
+  },
+  "worlds": [
+    {
+      "name": "Altis",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        39.7185,
+        25.012,
+        40.0946,
+        25.4815
+      ],
+      "mapSize": 30720.0,
+      "mapZone": 35,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_altis.pbo"
+    },
+    {
+      "name": "Stratis",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        39.45,
+        24.95,
+        39.56,
+        25.06
+      ],
+      "mapSize": 8192.0,
+      "mapZone": 35,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_stratis.pbo"
+    },
+    {
+      "name": "VR",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        0.0,
+        0.0,
+        0.09,
+        0.09
+      ],
+      "mapSize": 0.0,
+      "mapZone": 0,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Addons/map_vr.pbo"
+    },
+    {
+      "name": "Malden",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        39.7185,
+        25.012,
+        40.0946,
+        25.4815
+      ],
+      "mapSize": 12800.0,
+      "mapZone": 35,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Argo/Addons/map_malden.pbo"
+    },
+    {
+      "name": "Enoch",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        53.8,
+        22.7,
+        54.2,
+        23.2
+      ],
+      "mapSize": 12800.0,
+      "mapZone": 34,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Enoch/Addons/map_enoch.pbo"
+    },
+    {
+      "name": "Tanoa",
+      "provenance": "real/declared",
+      "source": "known",
+      "virtual": false,
+      "geo": [
+        -20.268,
+        174.003,
+        -20.1353,
+        174.146
+      ],
+      "mapSize": 15360.0,
+      "mapZone": 60,
+      "pbo": "/ext/SteamLibrary/steamapps/common/Arma 3/Expansion/Addons/map_tanoabuka.pbo"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,1 @@
+#include "initSettings.inc.sqf"

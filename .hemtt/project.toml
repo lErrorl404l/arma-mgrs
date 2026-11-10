@@ -1,0 +1,45 @@
+name = "MGRS Grid Reference"
+prefix = "mgrs"
+author = "lErrorl404l"
+mainprefix = "z"
+
+[properties]
+url = "https://github.com/lErrorl404l/arma-mgrs"
+
+[files]
+include = [
+    "mod.cpp",
+    "*.paa",
+]
+
+exclude = [
+    "*.png",
+    "*.psd",
+]
+
+[version]
+major = 0
+minor = 1
+patch = 0
+build = 1
+git_hash = 0
+
+[hemtt.launch.default]
+workshop = [
+    "450814997", # CBA_A3
+    "463939057", # ACE3
+]
+
+dlc = []
+
+optionals = []
+
+parameters = [
+    "-skipIntro",
+    "-noSplash",
+    "-showScriptErrors",
+    "-filePatching",
+    "-window",
+]
+
+executable = "arma3_x64"

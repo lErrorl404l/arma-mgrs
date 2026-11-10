@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project name="MGRS">
+    <Package name="ACE Compatibility">
+        <Key ID="STR_MGRS_ACE_DAGR_DIGITS_DESC">
+            <Original>Digits per axis shown on the DAGR.</Original>
+            <English>Digits per axis shown on the DAGR.</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_DAGR_DIGITS_NAME">
+            <Original>DAGR precision</Original>
+            <English>DAGR precision</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_DAGR_FULL_DESC">
+            <Original>Show zone, band and 100 km square in the DAGR grid field. This may clip on the standard DAGR width.</Original>
+            <English>Show zone, band and 100 km square in the DAGR grid field. This may clip on the standard DAGR width.</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_DAGR_FULL_NAME">
+            <Original>DAGR full MGRS</Original>
+            <English>DAGR full MGRS</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_ENABLED_DESC">
+            <Original>Replace the ACE DAGR and MicroDAGR grid fields with per-position MGRS.</Original>
+            <English>Replace the ACE DAGR and MicroDAGR grid fields with per-position MGRS.</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_ENABLED_NAME">
+            <Original>Enable ACE device patch</Original>
+            <English>Enable ACE device patch</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_INTERVAL_DESC">
+            <Original>Seconds between grid field updates. Takes effect after a restart.</Original>
+            <English>Seconds between grid field updates. Takes effect after a restart.</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_INTERVAL_NAME">
+            <Original>Device update interval</Original>
+            <English>Device update interval</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_MICRO_DIGITS_DESC">
+            <Original>Digits per axis shown on the MicroDAGR.</Original>
+            <English>Digits per axis shown on the MicroDAGR.</English>
+        </Key>
+        <Key ID="STR_MGRS_ACE_MICRO_DIGITS_NAME">
+            <Original>MicroDAGR precision</Original>
+            <English>MicroDAGR precision</English>
+        </Key>
+    </Package>
+</Project>

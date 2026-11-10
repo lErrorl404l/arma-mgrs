@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project name="MGRS">
+    <Package name="Core">
+        <Key ID="STR_MGRS_CORE_DEBUG_DESC">
+            <Original>Write the resolved georeference and its source to the RPT for the current map.</Original>
+            <English>Write the resolved georeference and its source to the RPT for the current map.</English>
+        </Key>
+        <Key ID="STR_MGRS_CORE_DEBUG_NAME">
+            <Original>Georeference debug log</Original>
+            <English>Georeference debug log</English>
+        </Key>
+        <Key ID="STR_MGRS_CORE_DEFAULT_DIGITS_DESC">
+            <Original>Digits per axis used by the script API when no digit count is passed.</Original>
+            <English>Digits per axis used by the script API when no digit count is passed.</English>
+        </Key>
+        <Key ID="STR_MGRS_CORE_DEFAULT_DIGITS_NAME">
+            <Original>Default MGRS digits</Original>
+            <English>Default MGRS digits</English>
+        </Key>
+    </Package>
+</Project>

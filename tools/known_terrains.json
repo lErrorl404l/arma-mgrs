@@ -1,0 +1,6 @@
+{
+  "_comment": "Optional real-world boxes. worldName -> [latMin, lonMin, latMax, lonMax]. Keys starting with _ are ignored. Entries here win over automatic resolution and are written into the generated mgrsGeo table.",
+  "_example": {
+    "some_real_map": [35.0, 62.0, 36.0, 63.0]
+  }
+}

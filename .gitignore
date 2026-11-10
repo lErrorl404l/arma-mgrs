@@ -1,0 +1,30 @@
+# Build output
+.hemttout/
+*.pbo
+*.bisign
+*.bikey
+*.biprivatekey
+*.sqfc
+
+# Local tooling and caches
+.opencode/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Generated release archives
+releases/
+*.zip
+
+# Local reverse-engineering workspace
+pyghidra_mcp_projects/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# HEMTT signing material
+.hemttprivatekey

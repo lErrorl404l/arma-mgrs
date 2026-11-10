@@ -1,0 +1,9 @@
+{
+  "_comment": "Declared synthetic baseline for maps with no usable real georeference. WGS84, one UTM zone, one origin. Synthetic references are exercise only and must not be used for real-world targeting.",
+  "datum": "WGS84",
+  "zone": 31,
+  "origin": [30.0, 3.0],
+  "version": "1.0.0",
+  "convergence": "world north assumed grid north",
+  "label": "Declared synthetic training baseline"
+}
