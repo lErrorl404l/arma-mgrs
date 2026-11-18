@@ -4,7 +4,7 @@ A-MGRS (Arma Military Grid Reference System) is a demonstration addon that repla
 
 This is a demo build. It shows how far the technique reaches on official and modded terrain, and it states where it stops. Treat the synthetic fallback as exercise data only.
 
-The engine grid, the GPS and `mapGridPosition` use the patched grid. Northing counts northwards, as on a printed map sheet.
+The engine grid, the GPS and **mapGridPosition** use the patched grid. Northing counts northwards, as on a printed map sheet.
 
 ## What it does
 
@@ -13,13 +13,13 @@ The engine grid, the GPS and `mapGridPosition` use the patched grid. Northing co
 - Resolves a real-world reference for the official terrains, and for terrain mods that declare one.
 - Falls back to a declared synthetic reference when a map declares nothing, marked virtual.
 - Replaces the DAGR and MicroDAGR grid fields through an optional ACE3 addon.
-- Gives scripts MGRS, UTM and `mapGridPosition` conversions.
+- Gives scripts MGRS, UTM and **mapGridPosition** conversions.
 
 ## How it works
 
-A converter reads each terrain's own data: latitude and longitude, `mapArea`, `mapZone`, map size and the terrain's own map coordinates. It writes a georeference table and a grid patch into a generated addon. A new terrain needs a converter run, not a code change.
+A converter reads each terrain's own data: latitude and longitude, **mapArea**, **mapZone**, map size and the terrain's own map coordinates. It writes a georeference table and a grid patch into a generated addon. A new terrain needs a converter run, not a code change.
 
-The generated config uses class inheritance. The base world class holds a `Grid` class, each terrain derives from it, and each override sets only the offsets and steps for that terrain.
+The generated config uses class inheritance. The base world class holds a **Grid** class, each terrain derives from it, and each override sets only the offsets and steps for that terrain.
 
 The grid is a least-squares fit. The engine draws straight lines, so the converter fits one step and one origin per axis to the exact conversion across the terrain, which spreads the residual instead of pinning it to a corner.
 
@@ -29,7 +29,7 @@ The converter also classifies the terrain with the Köppen climate system (Peel 
 
 ## Accuracy
 
-The conversion is exact. The script port was checked against the `mgrs` 1.7.0 reference library over 1,518 conversions at 506 positions, with zero mismatches.
+The conversion is exact. The script port was checked against the **mgrs** 1.7.0 reference library over 1,518 conversions at 506 positions, with zero mismatches.
 
 The drawn grid is an approximation, because Arma draws straight lines and MGRS easting curves with northing. Measured over the 29 terrains that carry a grid, a grid read differs from the exact conversion by 130 m at the median and 619 m at worst, on Altis.
 
@@ -43,10 +43,10 @@ The converter scans any terrain mod in the same way, with no per-map code. Of th
 
 ## Settings
 
-The settings are under `MGRS > Core` and need CBA:
+The settings are under **MGRS > Core** and need CBA:
 
-- `Default MGRS digits`: digits per axis when a script call omits the count.
-- `Georeference debug log`: write the resolved box and source to the RPT.
+- **Default MGRS digits**: digits per axis when a script call omits the count.
+- **Georeference debug log**: write the resolved box and source to the RPT.
 
 The engine grid and the terrain reference are read at load time. A CBA setting cannot change them during a mission.
 
@@ -54,17 +54,17 @@ The engine grid and the terrain reference are read at load time. A CBA setting c
 
 The ACE3 addon replaces the grid field on the DAGR and MicroDAGR with the MGRS string for the player's position.
 
-The settings are under `MGRS > ACE Compatibility`:
+The settings are under **MGRS > ACE Compatibility**:
 
-- `Enable ACE device patch`: turn the device patch off.
-- `Device update interval`: grid field refresh rate.
-- `DAGR full MGRS`: show the zone, band and 100 km square, or digits only.
-- `DAGR precision`: 100 m, 10 m or 1 m per axis.
-- `MicroDAGR precision`: 10 m or 1 m per axis.
+- **Enable ACE device patch**: turn the device patch off.
+- **Device update interval**: grid field refresh rate.
+- **DAGR full MGRS**: show the zone, band and 100 km square, or digits only.
+- **DAGR precision**: 100 m, 10 m or 1 m per axis.
+- **MicroDAGR precision**: 10 m or 1 m per axis.
 
-`DAGR full MGRS` is off by default, because the full string can exceed the DAGR field. The two settings that need a mission restart carry the CBA restart marker.
+**DAGR full MGRS** is off by default, because the full string can exceed the DAGR field. The two settings that need a mission restart carry the CBA restart marker.
 
-The engine grid stops at the 10 m tier. This keeps `mapGridPosition` and the GPS fields at eight digits, so they do not wrap. One-metre precision remains in the script functions and the devices.
+The engine grid stops at the 10 m tier. This keeps **mapGridPosition** and the GPS fields at eight digits, so they do not wrap. One-metre precision remains in the script functions and the devices.
 
 ## Multiplayer
 
@@ -87,13 +87,13 @@ call mgrs_fnc_getGeoref;                  // [latMin, lonMin, latMax, lonMax, vi
 ["WL_Rosche", [52.9275, 10.5640, 53.0639, 10.7918]] call mgrs_fnc_setGeoref;
 ```
 
-`mgrs_fnc_posToMGRS`, `mgrs_fnc_posToUTM` and `mgrs_fnc_mapGridPosition` accept an Object or a Position, and return an empty string when the terrain has no reference.
+**mgrs_fnc_posToMGRS**, **mgrs_fnc_posToUTM** and **mgrs_fnc_mapGridPosition** accept an Object or a Position, and return an empty string when the terrain has no reference.
 
-`mgrs_fnc_posToMGRS` and `mgrs_fnc_mapGridPosition` use four digits per axis when no count is passed. The `Default MGRS digits` setting changes that default.
+**mgrs_fnc_posToMGRS** and **mgrs_fnc_mapGridPosition** use four digits per axis when no count is passed. The **Default MGRS digits** setting changes that default.
 
-`mgrs_fnc_setGeoref` pins a box at runtime for a map that fell back to a virtual reference. It overrides the generated table until the mission restarts. It does not change the engine grid, which is read at load time.
+**mgrs_fnc_setGeoref** pins a box at runtime for a map that fell back to a virtual reference. It overrides the generated table until the mission restarts. It does not change the engine grid, which is read at load time.
 
-The function prefix stays `mgrs`. A-MGRS is the project name.
+The function prefix stays **mgrs**. A-MGRS is the project name.
 
 ## Known limits
 
@@ -102,7 +102,7 @@ The function prefix stays `mgrs`. A-MGRS is the project name.
 - The grid maps the terrain linearly onto its declared latitude and longitude box. It is not a geodetic transform.
 - A map whose box crosses a UTM zone boundary gets no engine grid. The script API still returns the correct zone for each position.
 - A terrain that loads as a mod can still shadow the patched grid.
-- Polar (UPS) conversion is not implemented. The band returns `Z`.
+- Polar (UPS) conversion is not implemented. The band returns **Z**.
 
 The full list, with the reasons, is in the development notes.
 
