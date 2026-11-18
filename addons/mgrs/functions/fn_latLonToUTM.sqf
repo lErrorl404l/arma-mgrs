@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * WGS84 latitude/longitude to UTM (Snyder series, sub-metre for map use).
  * Returns [zone, easting, northing].

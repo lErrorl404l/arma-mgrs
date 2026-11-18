@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Maps an Arma world position onto the terrain georeference. The first three
  * control points define a local affine fit. Otherwise the declared box is

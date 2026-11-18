@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 if (!hasInterface) exitWith {};
 if (!(missionNamespace getVariable ["mgrs_ace_enabled", true])) exitWith {};
 

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Public API: mapGridPosition-compatible MGRS string. Always easting then
  * northing, from the terrain georeference rather than the engine grid.

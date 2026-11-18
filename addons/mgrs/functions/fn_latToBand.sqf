@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Latitude band letter, C-X (I and O omitted). "Z" marks a polar (UPS) case,
  * which this addon does not convert.

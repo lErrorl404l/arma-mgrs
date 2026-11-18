@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Synthetic georeference for a world that declares no usable real location.
  * The origin comes from the declared baseline in CfgPatches >> mgrs_geo

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Public API: pin a georeference for a world at runtime. Use this for a map
  * that falls back to a virtual reference and whose real box is known.

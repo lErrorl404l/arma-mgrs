@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Public API: world position to a plain UTM string. Returns "" when the terrain
  * has no georeference.

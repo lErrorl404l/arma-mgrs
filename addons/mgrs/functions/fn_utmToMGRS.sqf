@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * UTM to MGRS (AA lettering scheme, WGS84): grid zone + 100 km square + digits.
  * Digits are truncated, never rounded, per the MGRS standard.

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 #include "\z\mgrs\addons\mgrs\script_mod.hpp"
 
 class CfgPatches {

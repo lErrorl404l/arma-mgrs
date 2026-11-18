@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Returns [box, source, confidence, controlPoints, biome].
  * The box remains the engine-grid compatible reference. Control points are

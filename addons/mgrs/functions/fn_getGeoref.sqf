@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Returns [latMin, lonMin, latMax, lonMax, virtual] for a world.
  * The richer source, confidence, control-point and biome data is available

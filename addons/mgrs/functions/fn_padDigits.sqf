@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Truncates to an integer and left-pads with zeros to a fixed width.
  */

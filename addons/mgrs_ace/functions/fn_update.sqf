@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 params [["_mode", "", [""]]];
 
 private _player = missionNamespace getVariable ["ACE_player", player];
