@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Check the addon's UTM/MGRS maths against the mgrs reference library.
 
 The SQF in addons/mgrs/functions is a direct transcription of these formulas.

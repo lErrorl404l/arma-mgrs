@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Tests for the terrain georeference converter."""
 
 from __future__ import annotations
@@ -296,13 +297,23 @@ class ScoreTests(unittest.TestCase):
 
 
 class ConfigTests(unittest.TestCase):
-    def test_cross_zone_box_still_patches_grid(self) -> None:
+    def test_cross_zone_box_skips_grid(self) -> None:
+        # One engine grid cannot follow a UTM zone reset, and drawing it in
+        # the centre zone makes the far half disagree with the API by a zone
+        # width. The API still returns the correct zone for each position.
         world = conv.World(
             name="Takistan", parent="CAWorld", pbo="x", body="", map_size=12800
         )
         world.grid_zoom_max = [0.01, 0.1, 0.5, 1e30]
         lines = conv.grid_patch(world, [33.94, 65.93, 34.06, 66.07], True)
-        self.assertTrue(lines)
+        self.assertEqual(lines, [])
+
+    def test_single_zone_box_patches_grid(self) -> None:
+        world = conv.World(
+            name="Altis", parent="CAWorld", pbo="x", body="", map_size=30720
+        )
+        world.grid_zoom_max = [0.01, 0.1, 0.5, 1e30]
+        lines = conv.grid_patch(world, [39.7185, 25.012, 40.0946, 25.4815], True)
         self.assertIn("stepX", "\n".join(lines))
 
     def test_render_has_no_unused_grid(self) -> None:
